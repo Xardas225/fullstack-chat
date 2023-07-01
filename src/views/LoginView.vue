@@ -1,3 +1,17 @@
+<script setup>
+const callback = async (response) => {
+
+  try {
+    let res = await axios.post('http://localhost:4001/api/google-login', {
+      token: response.credential
+    })
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+</script>
+
 <template>
   <div class="w-full">
     <div class="bg-teal-600 z-[-1] w-full h-[225px] fixed top-0"></div>
@@ -20,7 +34,7 @@
           The FullStack Chat
         </div> 
         <div class="w-full flex justify-center bg-[#191919] p-3 rounded-md">
-          <!-- <GoogleLogin /> -->
+          <GoogleLogin :callback="callback" />
         </div>
       </div>
     </div>
