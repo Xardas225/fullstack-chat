@@ -1,8 +1,12 @@
 <script setup>
+import { ref } from "vue";
+
 import ChatsView from "./ChatsView.vue";
 import AccountGroupIcon from "vue-material-design-icons/AccountGroup.vue";
 import DotsVerticalIcon from "vue-material-design-icons/DotsVertical.vue";
 import MagnifyIcon from "vue-material-design-icons/Magnify.vue";
+
+const open = ref(true);
 </script>
 
 <template>
@@ -11,7 +15,11 @@ import MagnifyIcon from "vue-material-design-icons/Magnify.vue";
       <div
         class="bg-[#F0F0F0] 2-full flex justify-between items-center px-3 py-2"
       >
-        <img class="rounded-full ml-1 w-10" src="" alt="" />
+        <img
+          class="rounded-full ml-1 w-10"
+          src="https://via.placeholder.com/100"
+          alt=""
+        />
         <div class="flex items-center justify-center">
           <AccountGroupIcon fillColor="#515151" class="mr-6" />
           <DotsVerticalIcon fillColor="#515151" class="cursor-pointer" />
@@ -31,8 +39,29 @@ import MagnifyIcon from "vue-material-design-icons/Magnify.vue";
           />
         </div>
       </div>
+    </div>
 
-      <ChatsView class="mt-[100px]" />
+    <ChatsView class="mt-[100px]" />
+
+    <div v-if="open">
+      <MessageView />
+    </div>
+
+    <div
+      v-else
+      class="ml-[420px] fixed w-[calc(100vw-420px)] h-100vh bg-gray-100 text-center"
+    >
+      <div class="grid h-screen place-items-center">
+        <div>
+          <div class="w-full flex items-center justify-center">
+            <img width="200" src="https://via.placeholder.com/400x200" alt="" />
+          </div>
+          <div class="text-[32px] text-gray-500 font-light mt-10">Chat Web</div>
+          <div class="text-[14px] text-gray-600 mt-2">
+            <div>Send and received messages.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
