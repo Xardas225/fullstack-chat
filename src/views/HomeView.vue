@@ -1,12 +1,17 @@
 <script setup>
+// Vue methods
 import { ref } from "vue";
-
+// Views
+import MessageView from "./MessageView.vue";
 import ChatsView from "./ChatsView.vue";
+import FindFriendsView from "./FindFriendsView.vue";
+// Icons
 import AccountGroupIcon from "vue-material-design-icons/AccountGroup.vue";
 import DotsVerticalIcon from "vue-material-design-icons/DotsVertical.vue";
 import MagnifyIcon from "vue-material-design-icons/Magnify.vue";
 
 const open = ref(true);
+const showFriendsOpen = ref(open);
 </script>
 
 <template>
@@ -41,7 +46,13 @@ const open = ref(true);
       </div>
     </div>
 
-    <ChatsView class="mt-[100px]" />
+    <div v-if="showFriendsOpen">
+      <FindFriendsView class="pt-18" />
+    </div>
+
+    <div v-else>
+      <ChatsView class="mt-[100px]" />
+    </div>
 
     <div v-if="open">
       <MessageView />
@@ -54,7 +65,7 @@ const open = ref(true);
       <div class="grid h-screen place-items-center">
         <div>
           <div class="w-full flex items-center justify-center">
-            <img width="200" src="https://via.placeholder.com/400x200" alt="" />
+            <img width="200" src="w-web-not-loaded-chat.png" alt="" />
           </div>
           <div class="text-[32px] text-gray-500 font-light mt-10">Chat Web</div>
           <div class="text-[14px] text-gray-600 mt-2">
