@@ -1,15 +1,13 @@
 <script setup>
-import axios from "axios";
+import { useRouter } from "vue-router";
+import { useUserStore } from "../store/user-store";
+
+const userStore = useUserStore();
+const router = useRouter();
 
 const callback = async (response) => {
-  try {
-    let res = await axios.post("http://localhost:4001/api/google-login", {
-      token: response.credential,
-    });
-    console.log(res.data);
-  } catch (error) {
-    console.log(error);
-  }
+  await userStore.getUserDetailsFromGoogle(response);
+  setTimeout(() => {router.push("/")}, 200)
 };
 </script>
 

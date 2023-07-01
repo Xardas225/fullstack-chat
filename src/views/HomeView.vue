@@ -10,8 +10,19 @@ import AccountGroupIcon from "vue-material-design-icons/AccountGroup.vue";
 import DotsVerticalIcon from "vue-material-design-icons/DotsVertical.vue";
 import MagnifyIcon from "vue-material-design-icons/Magnify.vue";
 
+import { useRouter } from "vue-router";
+import { useUserStore } from "../store/user-store";
+const userStore = useUserStore();
+const router = useRouter();
+
 const open = ref(true);
 const showFriendsOpen = ref(open);
+
+const logout = () => {
+  let res = confirm("Are you sute want to logout?");
+  if (res) userStore.logout();
+  router.push("/login");
+};
 </script>
 
 <template>
@@ -22,12 +33,16 @@ const showFriendsOpen = ref(open);
       >
         <img
           class="rounded-full ml-1 w-10"
-          src="https://via.placeholder.com/100"
+          :src="userStore.picture || ''"
           alt=""
         />
         <div class="flex items-center justify-center">
           <AccountGroupIcon fillColor="#515151" class="mr-6" />
-          <DotsVerticalIcon fillColor="#515151" class="cursor-pointer" />
+          <DotsVerticalIcon
+            @click="logout"
+            fillColor="#515151"
+            class="cursor-pointer"
+          />
         </div>
       </div>
 
