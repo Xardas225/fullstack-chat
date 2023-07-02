@@ -1,6 +1,6 @@
 <script setup>
 // Vue methods
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 // Views
 import MessageView from "./MessageView.vue";
 import ChatsView from "./ChatsView.vue";
@@ -17,6 +17,14 @@ const router = useRouter();
 
 const open = ref(true);
 const showFriendsOpen = ref(open);
+
+onMounted(() => {
+  try {
+    userStore.getAllUsers();
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const logout = () => {
   let res = confirm("Are you sute want to logout?");

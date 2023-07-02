@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { v4 as uuid } from "uuid";
 import { db } from "../firebase-init";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, getDocs, collection } from "firebase/firestore";
 
 axios.defaults.baseURL = "http://localhost:4001/";
 
@@ -13,6 +13,7 @@ export const useUserStore = defineStore("user", {
     picture: "",
     firstName: "",
     lastName: "",
+    allUsers: []
   }),
   actions: {
     async getUserDetailsFromGoogle(data) {
@@ -21,8 +22,8 @@ export const useUserStore = defineStore("user", {
           token: data.credential,
         });
 
-        let userExists = await this.checkIfUserExists(res.data.sub)
-        if(!userExists) await this.saveUserDetails(res)
+        let userExists = await this.checkIfUserExists(res.data.sub);
+        if (!userExists) await this.saveUserDetails(res);
 
         this.sub = res.data.sub;
         this.email = res.data.email;
@@ -35,12 +36,12 @@ export const useUserStore = defineStore("user", {
     },
 
     async checkIfUserExists(id) {
-      const docRef = doc(db, "users", id)
-      const docSnap = await getDoc(docRef)
-      return docSnap.exists()
+      const docRef = doc(db, "users", id);
+      const docSnap = await getDoc(docRef);
+      return docSnap.exists();
     },
 
-    async saveUserDetails (res) {
+    async saveUserDetails(res) {
       try {
         await setDoc(doc(db, "users", res.data.sub), {
           sub: res.data.sub,
@@ -48,9 +49,24 @@ export const useUserStore = defineStore("user", {
           picture: res.data.picture,
           firstName: res.data.given_name,
           lastName: res.data.family_name,
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
+      }
+    },
+
+    async getAllUsers() {
+      const querySnapshot = getDocs(collection(db, "users"));
+      let results = [];
+      (await querySnapshot).forEach((doc) => {
+        results.push(doc.data());
+      });
+
+      if (results.length) {
+        this.allUsers = [];
+        results.forEach((res) => {
+          this.allUsers.push(res);
+        });
       }
     },
 
