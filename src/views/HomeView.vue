@@ -12,11 +12,11 @@ import MagnifyIcon from "vue-material-design-icons/Magnify.vue";
 
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/user-store";
+import { storeToRefs } from "pinia";
 const userStore = useUserStore();
 const router = useRouter();
-
+const { showFriendsOpen, userDataForChat } = storeToRefs(userStore);
 const open = ref(true);
-const showFriendsOpen = ref(open);
 
 onMounted(() => {
   try {
@@ -60,6 +60,7 @@ const logout = () => {
         >
           <MagnifyIcon fillColor="#515151" class="ml-2" :size="18" />
           <input
+            @click="showFriendsOpen = !showFriendsOpen"
             class="ml-5 appearance-none w-full bg-[#F0F0F0] py-1.5 px-2.5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline placeholder:text-sm placeholder:text-gray-500"
             autocomplete="off"
             placeholder="Start a new Chat"
@@ -77,7 +78,7 @@ const logout = () => {
       <ChatsView class="mt-[100px]" />
     </div>
 
-    <div v-if="open">
+    <div v-if="userDataForChat.length">
       <MessageView />
     </div>
 
