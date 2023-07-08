@@ -10,6 +10,7 @@ import {
   collection,
   updateDoc,
   arrayUnion,
+  onSnapshot,
 } from "firebase/firestore";
 
 axios.defaults.baseURL = "http://localhost:4001/";
@@ -24,6 +25,7 @@ export const useUserStore = defineStore("user", {
     allUsers: [],
     userDataForChat: [],
     showFriendsOpen: false,
+    currentChat: null
   }),
   actions: {
     async getUserDetailsFromGoogle(data) {
@@ -114,6 +116,14 @@ export const useUserStore = defineStore("user", {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    async getChatById() {
+      onSnapshot(doc(db, "chat", id), (doc) => {
+        let res = [];
+        res.push(doc.data())
+        this.currentChat = res;
+      })
     },
 
     logout() {

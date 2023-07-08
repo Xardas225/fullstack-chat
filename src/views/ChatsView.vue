@@ -1,6 +1,9 @@
 <script setup>
 import MessageRowComponent from '../components/MessageRowComponent.vue';
 
+const openChat = async () => {
+  await getChatById(id)
+}
 </script>
 
 <template>
